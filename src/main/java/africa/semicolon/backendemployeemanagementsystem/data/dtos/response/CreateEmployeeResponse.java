@@ -9,6 +9,4 @@ public class CreateEmployeeResponse {
 
     private long id;
 
-    private String userName;
-
 }

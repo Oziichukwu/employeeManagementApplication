@@ -8,8 +8,6 @@ import lombok.Data;
 @Builder
 public class CreateEmployeeRequest {
 
-    private long id;
-
     private String firstName;
 
     private String lastName;
