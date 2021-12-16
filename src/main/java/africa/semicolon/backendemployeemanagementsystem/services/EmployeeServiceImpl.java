@@ -7,17 +7,21 @@ import africa.semicolon.backendemployeemanagementsystem.exceptions.DuplicateEmai
 import africa.semicolon.backendemployeemanagementsystem.exceptions.RunTimeExceptionPlaceholder;
 import africa.semicolon.backendemployeemanagementsystem.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+
 @Service
-@AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService{
 
     @Autowired
-    private final EmployeeRepository employeeRepository;
+    EmployeeRepository employeeRepository;
+
     @Override
-    public CreateEmployeeResponse createEmployee(CreateEmployeeRequest createEmployeeRequest) {
+    public String createEmployee(CreateEmployeeRequest createEmployeeRequest) {
 
         if (employeeRepository.existsByUserName(createEmployeeRequest.getUserName())){
             throw new RunTimeExceptionPlaceholder("username already exist");
@@ -31,11 +35,17 @@ public class EmployeeServiceImpl implements EmployeeService{
                 .firstName(createEmployeeRequest.getFirstName())
                 .lastName(createEmployeeRequest.getLastName())
                 .email(createEmployeeRequest.getEmail())
+                .userName(createEmployeeRequest.getUserName())
                 .build();
 
-        return CreateEmployeeResponse.builder()
-                .userName(employee1.getUserName())
-                .id(employee1.getId())
-                .build();
+        Employee savedEmployee = employeeRepository.save(employee1);
+
+         return savedEmployee.getId();
+    }
+
+    @Override
+    public List<Employee> getAllEmployees() {
+
+        return (List<Employee>) employeeRepository.findAll();
     }
 }
