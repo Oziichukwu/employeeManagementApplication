@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin("*")
 @RestController
 public class EmployeeController {
 
@@ -22,18 +22,18 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @PostMapping("/api/v1/create_employee")
-    public ResponseEntity<?> createEmployee(@RequestBody CreateEmployeeRequest createEmployeeRequest){
+    public ResponseEntity<?> createEmployee(@RequestBody CreateEmployeeRequest createEmployeeRequest) {
 
         try {
             return new ResponseEntity<>(employeeService.createEmployee(createEmployeeRequest), HttpStatus.OK);
 
-        } catch (DuplicateEmailException | RunTimeExceptionPlaceholder e){
+        } catch (DuplicateEmailException | RunTimeExceptionPlaceholder e) {
             return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/api/v1/employees")
-    public List<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
 }
