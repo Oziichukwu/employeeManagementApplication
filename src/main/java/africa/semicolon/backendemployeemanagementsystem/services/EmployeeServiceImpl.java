@@ -15,37 +15,40 @@ import java.util.List;
 
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     EmployeeRepository employeeRepository;
 
     @Override
-    public String createEmployee(CreateEmployeeRequest createEmployeeRequest) {
+    public CreateEmployeeResponse createEmployee(CreateEmployeeRequest createEmployeeRequest) {
 
-        if (employeeRepository.existsByUserName(createEmployeeRequest.getUserName())){
+        if (employeeRepository.existsByUserName(createEmployeeRequest.getUserName())) {
             throw new RunTimeExceptionPlaceholder("username already exist");
         }
 
-        if (employeeRepository.existsByEmail(createEmployeeRequest.getEmail())){
+        if (employeeRepository.existsByEmailId(createEmployeeRequest.getEmail())) {
             throw new DuplicateEmailException("Email already exist");
         }
 
         Employee employee1 = Employee.builder()
                 .firstName(createEmployeeRequest.getFirstName())
                 .lastName(createEmployeeRequest.getLastName())
-                .email(createEmployeeRequest.getEmail())
+                .emailId(createEmployeeRequest.getEmail())
                 .userName(createEmployeeRequest.getUserName())
                 .build();
 
-        Employee savedEmployee = employeeRepository.save(employee1);
+        employeeRepository.save(employee1);
 
-         return savedEmployee.getId();
+        return CreateEmployeeResponse.builder()
+                .userName(employee1.getUserName())
+                .id(employee1.getId())
+                .build();
     }
 
     @Override
     public List<Employee> getAllEmployees() {
 
-        return (List<Employee>) employeeRepository.findAll();
+        return employeeRepository.findAll();
     }
 }
