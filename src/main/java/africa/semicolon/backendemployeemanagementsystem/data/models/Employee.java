@@ -4,6 +4,7 @@ package africa.semicolon.backendemployeemanagementsystem.data.models;
 import lombok.*;
 
 import javax.persistence.*;
+
 @Builder
 @Setter
 @Getter
@@ -26,7 +27,7 @@ public class Employee {
 
     @Column(name = "email")
 
-    private String email;
+    private String emailId;
 
     @Column(name = "user_name")
     private String userName;

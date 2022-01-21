@@ -1,6 +1,6 @@
 package africa.semicolon.backendemployeemanagementsystem.exceptions;
 
-public class EmployeeManagementException extends RuntimeException{
+public class EmployeeManagementException extends RuntimeException {
     public EmployeeManagementException() {
     }
 

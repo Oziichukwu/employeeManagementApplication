@@ -8,11 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public interface EmployeeRepository extends CrudRepository<Employee,String> {
+
+public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
     //Optional<Employee> findByEmployeeId(String id);
     Boolean existsByUserName(String userName);
-    Boolean existsByEmail(String email);
+
+    Boolean existsByEmailId(String emailId);
 
 }
