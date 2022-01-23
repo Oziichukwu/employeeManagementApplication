@@ -13,5 +13,8 @@ public interface EmployeeService {
 
     List<Employee> getAllEmployees();
 
+    Employee findByEmployeeId(String id);
+
+    Employee updateEmployee(String id, Employee employeeDetails);
 
 }
