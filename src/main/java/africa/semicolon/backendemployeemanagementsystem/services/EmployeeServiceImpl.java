@@ -4,14 +4,14 @@ import africa.semicolon.backendemployeemanagementsystem.data.dtos.request.Create
 import africa.semicolon.backendemployeemanagementsystem.data.dtos.response.CreateEmployeeResponse;
 import africa.semicolon.backendemployeemanagementsystem.data.models.Employee;
 import africa.semicolon.backendemployeemanagementsystem.exceptions.DuplicateEmailException;
+import africa.semicolon.backendemployeemanagementsystem.exceptions.EmployeeNotFoundException;
 import africa.semicolon.backendemployeemanagementsystem.exceptions.RunTimeExceptionPlaceholder;
 import africa.semicolon.backendemployeemanagementsystem.repository.EmployeeRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -27,14 +27,14 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new RunTimeExceptionPlaceholder("username already exist");
         }
 
-        if (employeeRepository.existsByEmailId(createEmployeeRequest.getEmail())) {
+        if (employeeRepository.existsByEmailId(createEmployeeRequest.getEmailId())) {
             throw new DuplicateEmailException("Email already exist");
         }
 
         Employee employee1 = Employee.builder()
                 .firstName(createEmployeeRequest.getFirstName())
                 .lastName(createEmployeeRequest.getLastName())
-                .emailId(createEmployeeRequest.getEmail())
+                .emailId(createEmployeeRequest.getEmailId())
                 .userName(createEmployeeRequest.getUserName())
                 .build();
 
@@ -51,4 +51,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return employeeRepository.findAll();
     }
+
+    @Override
+    public Employee findByEmployeeId(String id) {
+
+         Optional<Employee> userEmployee = employeeRepository.findById(id);
+        return userEmployee.orElseThrow(()->
+                new EmployeeNotFoundException("Employee does not exist"));
+    }
+
+    @Override
+    public Employee updateEmployee(String id, Employee employeeDetails) {
+
+        Employee updateEmployee = employeeRepository.findById(id).orElseThrow(()->
+                new EmployeeNotFoundException("Employee does not exist"));
+
+        updateEmployee.setFirstName(employeeDetails.getFirstName());
+        updateEmployee.setLastName(employeeDetails.getLastName());
+        updateEmployee.setEmailId(employeeDetails.getEmailId());
+        updateEmployee.setUserName(employeeDetails.getUserName());
+
+        return employeeRepository.save(updateEmployee);
+    }
+
 }
