@@ -12,7 +12,7 @@ public class CreateEmployeeRequest {
 
     private String lastName;
 
-    private String email;
+    private String emailId;
 
     private String userName;
 
