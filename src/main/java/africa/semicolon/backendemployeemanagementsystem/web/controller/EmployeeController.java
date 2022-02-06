@@ -1,13 +1,13 @@
-package africa.semicolon.backendemployeemanagementsystem.controller;
+package africa.semicolon.backendemployeemanagementsystem.web;
 
-import africa.semicolon.backendemployeemanagementsystem.data.dtos.request.CreateEmployeeRequest;
-import africa.semicolon.backendemployeemanagementsystem.data.dtos.response.EmployeeInfo;
+import africa.semicolon.backendemployeemanagementsystem.data.dtos.request.CreateEmployeeRequestDto;
 import africa.semicolon.backendemployeemanagementsystem.data.models.Employee;
-import africa.semicolon.backendemployeemanagementsystem.exceptions.DuplicateEmailException;
-import africa.semicolon.backendemployeemanagementsystem.exceptions.EmployeeNotFoundException;
-import africa.semicolon.backendemployeemanagementsystem.exceptions.RunTimeExceptionPlaceholder;
+import africa.semicolon.backendemployeemanagementsystem.web.exceptions.DuplicateEmailException;
+import africa.semicolon.backendemployeemanagementsystem.web.exceptions.EmployeeNotFoundException;
+import africa.semicolon.backendemployeemanagementsystem.web.exceptions.RunTimeExceptionPlaceholder;
 import africa.semicolon.backendemployeemanagementsystem.repository.EmployeeRepository;
 import africa.semicolon.backendemployeemanagementsystem.services.EmployeeService;
+import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @CrossOrigin("*")
+@RequestMapping("/api/v1/employee")
 @RestController
 public class EmployeeController {
 
@@ -25,8 +26,8 @@ public class EmployeeController {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @PostMapping("api/v1/create_employee")
-    public ResponseEntity<?> createEmployee(@RequestBody CreateEmployeeRequest createEmployeeRequest) {
+    @PostMapping("/create_employee")
+    public ResponseEntity<?> createEmployee(@RequestBody CreateEmployeeRequestDto createEmployeeRequest) {
 
         try {
             return new ResponseEntity<>(employeeService.createEmployee(createEmployeeRequest), HttpStatus.OK);
@@ -36,12 +37,18 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping("/api/v1/employees")
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+//    @GetMapping("/api/v1/employees")
+//    public List<Employee> getAllEmployees() {
+//        return employeeService.getAllEmployees();
+//    }
+
+    @GetMapping()
+    public ResponseEntity<?> getAllEmployees(){
+        List<Employee> employees = employeeService.getAllEmployees();
+        return ResponseEntity.ok().body(employees);
     }
 
-    @GetMapping("/api/v1/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?>findByEmployeeId(@PathVariable String id){
         try{
             return new ResponseEntity<>(employeeService.findByEmployeeId(id), HttpStatus.OK);
@@ -50,7 +57,7 @@ public class EmployeeController {
         }
     }
 
-    @PutMapping("/api/v1/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable String id, @RequestBody Employee employeeDetails){
       try {
           return new ResponseEntity<>(employeeService.updateEmployee(id,employeeDetails), HttpStatus.OK);
@@ -60,8 +67,8 @@ public class EmployeeController {
     }
 
 
-     @DeleteMapping("/api/v1/{id}")
-    public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable String id){
+     @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus>deleteEmployee(@PathVariable String id){
         Employee employee = employeeRepository.findById(id).orElseThrow(()->
                 new EmployeeNotFoundException("employee does not exist"));
 
@@ -71,4 +78,21 @@ public class EmployeeController {
     }
 
 
+    @PatchMapping(path = "/{employeeId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> updateEmployeeDetails(@PathVariable String employeeId, @RequestBody JsonPatch patch){
+
+        try {
+            Employee updatedEmployee = employeeService.updateEmployeeDetails(employeeId, patch);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedEmployee);
+        }catch (EmployeeNotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }
+
+
+/*
+* presentation layer
+* business logic
+* data access                loose coupling
+* */
