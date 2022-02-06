@@ -1,12 +1,17 @@
 package africa.semicolon.backendemployeemanagementsystem.services;
 
-import africa.semicolon.backendemployeemanagementsystem.data.dtos.request.CreateEmployeeRequest;
-import africa.semicolon.backendemployeemanagementsystem.data.dtos.response.CreateEmployeeResponse;
+import africa.semicolon.backendemployeemanagementsystem.data.dtos.request.CreateEmployeeRequestDto;
+import africa.semicolon.backendemployeemanagementsystem.data.dtos.response.CreateEmployeeResponseDto;
 import africa.semicolon.backendemployeemanagementsystem.data.models.Employee;
-import africa.semicolon.backendemployeemanagementsystem.exceptions.DuplicateEmailException;
-import africa.semicolon.backendemployeemanagementsystem.exceptions.EmployeeNotFoundException;
-import africa.semicolon.backendemployeemanagementsystem.exceptions.RunTimeExceptionPlaceholder;
+import africa.semicolon.backendemployeemanagementsystem.web.exceptions.DuplicateEmailException;
+import africa.semicolon.backendemployeemanagementsystem.web.exceptions.EmployeeNotFoundException;
+import africa.semicolon.backendemployeemanagementsystem.web.exceptions.RunTimeExceptionPlaceholder;
 import africa.semicolon.backendemployeemanagementsystem.repository.EmployeeRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +22,12 @@ import java.util.Optional;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
+
     @Autowired
-    EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
     @Override
-    public CreateEmployeeResponse createEmployee(CreateEmployeeRequest createEmployeeRequest) {
+    public CreateEmployeeResponseDto createEmployee(CreateEmployeeRequestDto createEmployeeRequest) {
 
         if (employeeRepository.existsByUserName(createEmployeeRequest.getUserName())) {
             throw new RunTimeExceptionPlaceholder("username already exist");
@@ -40,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeRepository.save(employee1);
 
-        return CreateEmployeeResponse.builder()
+        return CreateEmployeeResponseDto.builder()
                 .userName(employee1.getUserName())
                 .id(employee1.getId())
                 .build();
@@ -72,6 +78,42 @@ public class EmployeeServiceImpl implements EmployeeService {
         updateEmployee.setUserName(employeeDetails.getUserName());
 
         return employeeRepository.save(updateEmployee);
+    }
+
+    private Employee saveEmployee(Employee employee){
+        if (employee == null){
+            throw new EmployeeNotFoundException("Employee cannot be null");
+        }
+
+        return employeeRepository.save(employee);
+    }
+
+    @Override
+    public Employee updateEmployeeDetails(String employeeId, JsonPatch patch) {
+
+        Optional<Employee> employeeQuery = employeeRepository.findById(employeeId);
+
+        if (employeeQuery.isEmpty()){
+            throw new EmployeeNotFoundException("Employee with id" + employeeId + "does not exist");
+        }
+
+        Employee updatedEmployee = employeeQuery.get();
+
+        try {
+            updatedEmployee = implementPatchOnEmployee(patch , updatedEmployee);
+            return saveEmployee(updatedEmployee);
+        } catch (JsonPatchException | JsonProcessingException e) {
+            throw new EmployeeNotFoundException("Employee update Failed");
+        }
+    }
+
+    private Employee implementPatchOnEmployee(JsonPatch patch, Employee employeeToBeUpdated) throws JsonPatchException, JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        JsonNode patched = patch.apply(objectMapper.convertValue(employeeToBeUpdated, JsonNode.class));
+
+        return objectMapper.treeToValue(patched , Employee.class);
     }
 
 }

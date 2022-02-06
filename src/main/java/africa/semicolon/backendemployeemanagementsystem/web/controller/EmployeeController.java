@@ -1,4 +1,4 @@
-package africa.semicolon.backendemployeemanagementsystem.web;
+package africa.semicolon.backendemployeemanagementsystem.web.controller;
 
 import africa.semicolon.backendemployeemanagementsystem.data.dtos.request.CreateEmployeeRequestDto;
 import africa.semicolon.backendemployeemanagementsystem.data.models.Employee;
@@ -94,5 +94,5 @@ public class EmployeeController {
 /*
 * presentation layer
 * business logic
-* data access                loose coupling
+* data access loose coupling
 * */
