@@ -1,4 +1,4 @@
-package africa.semicolon.backendemployeemanagementsystem.exceptions;
+package africa.semicolon.backendemployeemanagementsystem.web.exceptions;
 
 public class EmployeeNotFoundException extends EmployeeManagementException {
     public EmployeeNotFoundException() {

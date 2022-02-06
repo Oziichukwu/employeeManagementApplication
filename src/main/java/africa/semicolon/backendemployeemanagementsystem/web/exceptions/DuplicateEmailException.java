@@ -1,4 +1,4 @@
-package africa.semicolon.backendemployeemanagementsystem.exceptions;
+package africa.semicolon.backendemployeemanagementsystem.web.exceptions;
 
 public class DuplicateEmailException extends EmployeeManagementException {
     public DuplicateEmailException() {
