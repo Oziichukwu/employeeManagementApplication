@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateEmployeeRequest {
+public class CreateEmployeeRequestDto {
 
     private String firstName;
 

@@ -9,6 +9,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
+// mvc
+
+// client - server relationship
+
 @SpringBootApplication
 public class BackEndEmployeeManagementSystemApplication implements CommandLineRunner {
 
@@ -16,8 +21,8 @@ public class BackEndEmployeeManagementSystemApplication implements CommandLineRu
         SpringApplication.run(BackEndEmployeeManagementSystemApplication.class, args);
     }
 
-    @Autowired
-    EmployeeRepository employeeRepository;
+//    @Autowired
+//    EmployeeRepository employeeRepository;
 
     @Override
     public void run(String... args) throws Exception {

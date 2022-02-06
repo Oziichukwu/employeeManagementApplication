@@ -1,9 +1,12 @@
 package africa.semicolon.backendemployeemanagementsystem.data.models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Builder
 @Setter
@@ -18,7 +21,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name",nullable = false)
     private String firstName;
 
     @Column(name = "last_name")
@@ -31,4 +34,8 @@ public class Employee {
 
     @Column(name = "user_name")
     private String userName;
+
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dateCreated;
 }
