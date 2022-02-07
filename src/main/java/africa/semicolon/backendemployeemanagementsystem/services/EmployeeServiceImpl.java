@@ -44,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .userName(createEmployeeRequest.getUserName())
                 .build();
 
-        employeeRepository.save(employee1);
+                saveEmployee(employee1);
 
         return CreateEmployeeResponseDto.builder()
                 .userName(employee1.getUserName())
