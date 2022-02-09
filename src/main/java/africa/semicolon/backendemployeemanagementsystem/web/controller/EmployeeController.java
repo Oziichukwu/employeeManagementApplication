@@ -1,6 +1,7 @@
 package africa.semicolon.backendemployeemanagementsystem.web.controller;
 
 import africa.semicolon.backendemployeemanagementsystem.data.dtos.request.CreateEmployeeRequestDto;
+import africa.semicolon.backendemployeemanagementsystem.data.dtos.response.ApiResponse;
 import africa.semicolon.backendemployeemanagementsystem.data.models.Employee;
 import africa.semicolon.backendemployeemanagementsystem.web.exceptions.DuplicateEmailException;
 import africa.semicolon.backendemployeemanagementsystem.web.exceptions.EmployeeNotFoundException;
@@ -30,8 +31,8 @@ public class EmployeeController {
     public ResponseEntity<?> createEmployee(@RequestBody CreateEmployeeRequestDto createEmployeeRequest) {
 
         try {
-            return new ResponseEntity<>(employeeService.createEmployee(createEmployeeRequest), HttpStatus.OK);
-
+                employeeService.createEmployee(createEmployeeRequest);
+                return new ResponseEntity<>(new ApiResponse(true, "Employee Created Successfully"), HttpStatus.CREATED);
         } catch (DuplicateEmailException | RunTimeExceptionPlaceholder e) {
             return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -62,19 +63,20 @@ public class EmployeeController {
       try {
           return new ResponseEntity<>(employeeService.updateEmployee(id,employeeDetails), HttpStatus.OK);
       }catch (EmployeeNotFoundException e){
-          return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+          return new ResponseEntity<>(new ApiResponse(false, "Employee Update Failed"), HttpStatus.BAD_REQUEST);
       }
     }
 
 
      @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus>deleteEmployee(@PathVariable String id){
-        Employee employee = employeeRepository.findById(id).orElseThrow(()->
-                new EmployeeNotFoundException("employee does not exist"));
+    public ResponseEntity<?>deleteEmployee(@PathVariable String id){
 
-        employeeRepository.delete(employee);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            employeeService.deleteEmployeeById(id);
+            return new ResponseEntity<>(new ApiResponse(true, "Employee Deleted Successfully"), HttpStatus.NO_CONTENT);
+        }catch(EmployeeNotFoundException e){
+            return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
 
