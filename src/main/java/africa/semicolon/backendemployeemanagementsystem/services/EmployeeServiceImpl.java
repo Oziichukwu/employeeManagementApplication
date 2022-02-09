@@ -107,6 +107,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    @Override
+    public void deleteEmployeeById(String employeeId) {
+
+        Employee employeeToDelete = findByEmployeeId(employeeId);
+
+        deleteEmployee(employeeToDelete);
+    }
+
+    private void deleteEmployee(Employee employeeToDelete) {
+
+        employeeRepository.delete(employeeToDelete);
+    }
+
+
     private Employee implementPatchOnEmployee(JsonPatch patch, Employee employeeToBeUpdated) throws JsonPatchException, JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();

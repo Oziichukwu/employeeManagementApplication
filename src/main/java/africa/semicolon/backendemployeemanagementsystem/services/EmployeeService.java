@@ -20,4 +20,6 @@ public interface EmployeeService {
 
     Employee updateEmployeeDetails(String employeeId, JsonPatch patch);
 
+    void deleteEmployeeById(String employeeId);
+
 }
