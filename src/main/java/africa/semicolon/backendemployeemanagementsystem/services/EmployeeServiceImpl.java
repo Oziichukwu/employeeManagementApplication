@@ -128,7 +128,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Optional<Employee> employeeQuery = employeeRepository.findById(employeeId);
 
-        if (employeeQuery.isEmpty()){
+        if (employeeQuery == null){
             throw new EmployeeNotFoundException("Employee with id" + employeeId + "does not exist");
         }
 
