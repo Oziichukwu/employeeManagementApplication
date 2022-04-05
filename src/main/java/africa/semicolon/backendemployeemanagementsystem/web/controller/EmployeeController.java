@@ -4,7 +4,6 @@ import africa.semicolon.backendemployeemanagementsystem.data.dtos.request.Create
 import africa.semicolon.backendemployeemanagementsystem.data.dtos.response.ApiResponse;
 import africa.semicolon.backendemployeemanagementsystem.data.dtos.response.CreateEmployeeResponseDto;
 import africa.semicolon.backendemployeemanagementsystem.data.models.Employee;
-import africa.semicolon.backendemployeemanagementsystem.email.EmailSender;
 import africa.semicolon.backendemployeemanagementsystem.web.exceptions.DuplicateEmailException;
 import africa.semicolon.backendemployeemanagementsystem.web.exceptions.EmployeeNotFoundException;
 import africa.semicolon.backendemployeemanagementsystem.web.exceptions.RunTimeExceptionPlaceholder;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @CrossOrigin("*")
-@RequestMapping("/api/v1/employee")
+@RequestMapping("/employee")
 @RestController
 public class EmployeeController {
 
