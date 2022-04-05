@@ -1,18 +1,8 @@
 package africa.semicolon.backendemployeemanagementsystem;
-
-import africa.semicolon.backendemployeemanagementsystem.data.models.Employee;
-import africa.semicolon.backendemployeemanagementsystem.repository.EmployeeRepository;
-import africa.semicolon.backendemployeemanagementsystem.services.EmployeeService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
-// mvc
-
-// client - server relationship
 
 @SpringBootApplication
 public class BackEndEmployeeManagementSystemApplication implements CommandLineRunner {

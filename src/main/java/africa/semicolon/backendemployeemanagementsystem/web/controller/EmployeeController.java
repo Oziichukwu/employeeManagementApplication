@@ -52,7 +52,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?>findByEmployeeId(@PathVariable String id){
+    public ResponseEntity<?>findByEmployeeId(@PathVariable Long id){
         try{
             return new ResponseEntity<>(employeeService.findByEmployeeId(id), HttpStatus.OK);
         }catch (EmployeeNotFoundException e){
@@ -61,7 +61,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEmployee(@PathVariable String id, @RequestBody Employee employeeDetails){
+    public ResponseEntity<?> updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails){
       try {
           return new ResponseEntity<>(employeeService.updateEmployee(id,employeeDetails), HttpStatus.OK);
       }catch (EmployeeNotFoundException e){
@@ -71,7 +71,7 @@ public class EmployeeController {
 
 
      @DeleteMapping("/{id}")
-    public ResponseEntity<?>deleteEmployee(@PathVariable String id){
+    public ResponseEntity<?>deleteEmployee(@PathVariable Long id){
 
         try {
              employeeService.deleteEmployeeById(id);
@@ -83,7 +83,7 @@ public class EmployeeController {
 
 
     @PatchMapping(path = "/{employeeId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> updateEmployeeDetails(@PathVariable String employeeId, @RequestBody JsonPatch patch){
+    public ResponseEntity<?> updateEmployeeDetails(@PathVariable Long employeeId, @RequestBody JsonPatch patch){
 
         try {
             Employee updatedEmployee = employeeService.updateEmployeeDetails(employeeId, patch);

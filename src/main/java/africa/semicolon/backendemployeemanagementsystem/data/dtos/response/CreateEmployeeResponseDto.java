@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class CreateEmployeeResponseDto {
 
-    private String id;
+    private Long id;
 
     private String userName;
 

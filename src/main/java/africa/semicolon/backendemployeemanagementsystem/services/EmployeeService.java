@@ -14,12 +14,12 @@ public interface EmployeeService {
 
     List<Employee> getAllEmployees();
 
-    Employee findByEmployeeId(String id);
+    Employee findByEmployeeId(Long id);
 
-    Employee updateEmployee(String id, Employee employeeDetails);
+    Employee updateEmployee(Long id, Employee employeeDetails);
 
-    Employee updateEmployeeDetails(String employeeId, JsonPatch patch);
+    Employee updateEmployeeDetails(Long employeeId, JsonPatch patch);
 
-    void deleteEmployeeById(String employeeId);
+    void deleteEmployeeById(Long employeeId);
 
 }

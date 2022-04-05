@@ -94,7 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee findByEmployeeId(String id) {
+    public Employee findByEmployeeId(Long id) {
 
          Optional<Employee> userEmployee = employeeRepository.findById(id);
         return userEmployee.orElseThrow(()->
@@ -102,7 +102,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployee(String id, Employee employeeDetails) {
+    public Employee updateEmployee(Long id, Employee employeeDetails) {
 
         Employee updateEmployee = employeeRepository.findById(id).orElseThrow(()->
                 new EmployeeNotFoundException("Employee does not exist"));
@@ -124,7 +124,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployeeDetails(String employeeId, JsonPatch patch) {
+    public Employee updateEmployeeDetails(Long employeeId, JsonPatch patch) {
 
         Optional<Employee> employeeQuery = employeeRepository.findById(employeeId);
 
@@ -143,7 +143,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployeeById(String employeeId) {
+    public void deleteEmployeeById(Long employeeId) {
 
         Employee employeeToDelete = findByEmployeeId(employeeId);
 
