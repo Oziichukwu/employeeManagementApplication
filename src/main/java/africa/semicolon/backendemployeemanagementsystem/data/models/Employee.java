@@ -35,7 +35,13 @@ public class Employee {
     @Column(name = "user_name")
     private String userName;
 
+    private String imageUrl;
+
+
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateCreated;
+
+    @Transient
+    private String generateEmployeeId;
 }

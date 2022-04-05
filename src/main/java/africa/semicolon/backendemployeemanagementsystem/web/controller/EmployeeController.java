@@ -2,7 +2,9 @@ package africa.semicolon.backendemployeemanagementsystem.web.controller;
 
 import africa.semicolon.backendemployeemanagementsystem.data.dtos.request.CreateEmployeeRequestDto;
 import africa.semicolon.backendemployeemanagementsystem.data.dtos.response.ApiResponse;
+import africa.semicolon.backendemployeemanagementsystem.data.dtos.response.CreateEmployeeResponseDto;
 import africa.semicolon.backendemployeemanagementsystem.data.models.Employee;
+import africa.semicolon.backendemployeemanagementsystem.email.EmailSender;
 import africa.semicolon.backendemployeemanagementsystem.web.exceptions.DuplicateEmailException;
 import africa.semicolon.backendemployeemanagementsystem.web.exceptions.EmployeeNotFoundException;
 import africa.semicolon.backendemployeemanagementsystem.web.exceptions.RunTimeExceptionPlaceholder;
@@ -27,12 +29,12 @@ public class EmployeeController {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @PostMapping("/create_employee")
+    @PostMapping()
     public ResponseEntity<?> createEmployee(@RequestBody CreateEmployeeRequestDto createEmployeeRequest) {
 
         try {
-                employeeService.createEmployee(createEmployeeRequest);
-                return new ResponseEntity<>(new ApiResponse(true, "Employee Created Successfully"), HttpStatus.CREATED);
+               CreateEmployeeResponseDto responseDto =  employeeService.createEmployee(createEmployeeRequest);
+                return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
         } catch (DuplicateEmailException | RunTimeExceptionPlaceholder e) {
             return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -72,7 +74,7 @@ public class EmployeeController {
     public ResponseEntity<?>deleteEmployee(@PathVariable String id){
 
         try {
-            employeeService.deleteEmployeeById(id);
+             employeeService.deleteEmployeeById(id);
             return new ResponseEntity<>(new ApiResponse(true, "Employee Deleted Successfully"), HttpStatus.NO_CONTENT);
         }catch(EmployeeNotFoundException e){
             return new ResponseEntity<>(new ApiResponse(false, e.getMessage()), HttpStatus.BAD_REQUEST);

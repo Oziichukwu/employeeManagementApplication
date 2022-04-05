@@ -9,7 +9,8 @@ public class CreateEmployeeResponseDto {
 
     private String id;
 
-
     private String userName;
+
+    private String generatedEmployeeId;
 
 }

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -33,13 +34,14 @@ public class EmployeeRepositoryTest {
         employee.setLastName("jola");
         employee.setUserName("sholastical");
         employee.setEmailId("jola@gmail.com");
-
+        employee.setGenerateEmployeeId(generateEmployeeId());
         assertThat(employee.getId()).isNull();
 
         //when
         employeeRepository.save(employee);
 
         assertThat(employee).isNotNull();
+        assertThat(employee.getGenerateEmployeeId()).isNotNull();
 
     }
 
@@ -96,6 +98,13 @@ public class EmployeeRepositoryTest {
 
 
 
+    }
+
+
+    private String generateEmployeeId(){
+        String employeeId =  UUID.randomUUID().toString();
+        log.info("employee id is -> {}", employeeId);
+        return employeeId;
     }
 
 }
