@@ -17,12 +17,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Slf4j
 @SpringBootTest
-@Sql(scripts = {"/db/insert.sql"})
+//@Sql(scripts = {"/db/insert.sql"})
 public class EmployeeRepositoryTest {
 
     @Autowired
     private EmployeeRepository employeeRepository;
-
 
     @Test
     @DisplayName("Save an Employee to a database")
