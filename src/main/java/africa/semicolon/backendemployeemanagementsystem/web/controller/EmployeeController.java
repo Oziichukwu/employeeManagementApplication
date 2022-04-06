@@ -39,11 +39,6 @@ public class EmployeeController {
         }
     }
 
-//    @GetMapping("/api/v1/employees")
-//    public List<Employee> getAllEmployees() {
-//        return employeeService.getAllEmployees();
-//    }
-
     @GetMapping()
     public ResponseEntity<?> getAllEmployees(){
         List<Employee> employees = employeeService.getAllEmployees();
